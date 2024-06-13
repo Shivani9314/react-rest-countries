@@ -9,7 +9,7 @@ function App() {
 
   return (
     <ThemeProvider>
-      <div className={`flex flex-col h-screen w-full ${darkMode ? 'bg-bgDark' : 'bg-bgLight'}`}>
+      <div className={`flex flex-col min-h-screen w-full ${darkMode ? 'bg-bgDark' : 'bg-bgLight'}`}>
         <Navbar />
         <DataFetchingComponent />
       </div>
