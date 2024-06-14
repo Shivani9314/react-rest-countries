@@ -4,10 +4,11 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import Toast from '../toast/Toast';
 import { useTheme } from '../ThemeContext/ThemeContext';
 
-function SearchComponent({ data1, filteredData, setFilteredData }) {
+function SearchComponent({ data1, setFilteredData }) {
   const [uniqueRegions, setUniqueRegions] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedRegion, setSelectedRegion] = useState('');
   const { darkMode } = useTheme();
-
 
   useEffect(() => {
     try {
@@ -19,32 +20,37 @@ function SearchComponent({ data1, filteredData, setFilteredData }) {
       }, []);
       setUniqueRegions(regions);
     } catch (error) {
-        <Toast value={error}/>;
+      <Toast value={error} />;
     }
   }, [data1]);
 
-  const handleSearchCountry = (e) => {
+  useEffect(() => {
     try {
-      const searchedCountry = e.target.value.toLowerCase();
-      const filteredCountries = data1.filter((country) => {
-        return country.name.common.toLowerCase().includes(searchedCountry);
-      });
+      let filteredCountries = data1;
+
+      if (searchQuery) {
+        filteredCountries = filteredCountries.filter((country) =>
+          country.name.common.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+      }
+
+      if (selectedRegion) {
+        filteredCountries = filteredCountries.filter((country) => country.region === selectedRegion);
+      }
 
       setFilteredData(filteredCountries);
     } catch (error) {
-      <Toast value={error}/>;
+  
+      <Toast value={error} />;
     }
+  }, [data1, searchQuery, selectedRegion, setFilteredData]);
+
+  const handleSearchCountry = (e) => {
+    setSearchQuery(e.target.value);
   };
 
   const handleSelectRegion = (e) => {
-    try {
-      const region = e.target.value;
-      const filteredCountries = filteredData.filter((country) => country.region === region);
-
-      setFilteredData(filteredCountries);
-    } catch (error) {
-        <Toast value={error}/>;
-    }
+    setSelectedRegion(e.target.value);
   };
 
   return (
@@ -61,10 +67,13 @@ function SearchComponent({ data1, filteredData, setFilteredData }) {
           />
         </div>
       </div>
-      <select className={`py-0 px-5 focus:outline-none shadow-lg border-none rounded-md appearance-none ${darkMode ? 'bg-elementDark text-textDark' : 'bg-elementLight text-textLight'}`} id="select-country" onChange={handleSelectRegion}>
-        <option value="" hidden>
-          Filter By region
-        </option>
+      <select
+        className={`py-0 px-5 focus:outline-none shadow-lg border-none rounded-md appearance-none ${darkMode ? 'bg-elementDark text-textDark' : 'bg-elementLight text-textLight'}`}
+        id="select-country"
+        onChange={handleSelectRegion}
+        value={selectedRegion}
+      >
+        <option value="">Filter By Region</option>
         {uniqueRegions.map((region, index) => (
           <option key={index} value={region}>
             {region}
