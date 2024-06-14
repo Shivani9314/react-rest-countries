@@ -1,6 +1,6 @@
 // CountryCard.jsx
 import React from 'react';
-import { useTheme } from '../ThemeContext/ThemeContext';
+import { useTheme } from '../../context/ThemeContext';
 
 const CountryCard = ({ data1 }) => {
   const { darkMode } = useTheme();

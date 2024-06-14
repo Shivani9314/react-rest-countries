@@ -2,13 +2,12 @@ import React, { useEffect, useState } from 'react';
 import CountryCard from '../CountryCard/CountryCard';
 import SearchComponent from '../SearchComponent/SearchComponent';
 import Toast from '../toast/Toast';
-import { useTheme } from '../ThemeContext/ThemeContext';
+import { useTheme } from '../../context/ThemeContext';
 
-const DataFetchingComponent = () => {
-  const [originalData, setOriginalData] = useState([]);
+const CountriesContainer = () => {
+  const [countriesData, setCountriesData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [status, setStatus] = useState({ loading: true, error: null });
   const { darkMode } = useTheme();
 
   useEffect(() => {
@@ -19,39 +18,40 @@ const DataFetchingComponent = () => {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        setOriginalData(data);
+        setCountriesData(data);
         setFilteredData(data);
-        setLoading(false);
+        setStatus({ loading: false, error: null });
       } catch (error) {
-        setError(error);
-        setLoading(false);
+        setStatus({ loading: false, error: error.message });
       }
     };
 
     fetchData();
   }, []);
 
-  if (loading) {
-    return <div className="absolute top-0 left-0 bg-glare h-full w-full grid place-content-center">
-      <div className="text-black text-3xl tracking-widest font-bold">Loading...</div>
-    </div>;
+  if (status.loading) {
+    return (
+      <div className="absolute top-0 left-0 bg-glare h-full w-full grid place-content-center">
+        <div className="text-black text-3xl tracking-widest font-bold">Loading...</div>
+      </div>
+    );
   }
 
-  if (error) {
-    return <Toast value={error}/>;
+  if (status.error) {
+    return <Toast value={status.error} />;
   }
 
   return (
     <div className={`w-full h-full ${darkMode ? 'bg-bgDark' : 'bg-bgLight'}`}>
-      <div className={`w-4/5 h-full mx-auto flex flex-col items-center `}>
-        <SearchComponent data1={originalData} filteredData={filteredData} setFilteredData={setFilteredData} />
+      <div className="w-4/5 h-full mx-auto flex flex-col items-center">
+        <SearchComponent countriesData={countriesData} setFilteredData={setFilteredData} />
         <div className="grid grid-cols-4 py-8 gap-20 justify-between">
-        {filteredData.length > 0 ? (
+          {filteredData.length > 0 ? (
             filteredData.map((item) => (
               <CountryCard key={item.cca3} data1={item} />
             ))
           ) : (
-            <div className={`h-full col-span-3 text-center text-xl ${darkMode ? 'text-textDark' : 'text-textLight'}`}>
+            <div className={`h-full col-span-4 text-center text-xl ${darkMode ? 'text-textDark' : 'text-textLight'}`}>
               No countries found.
             </div>
           )}
@@ -61,4 +61,4 @@ const DataFetchingComponent = () => {
   );
 };
 
-export default DataFetchingComponent;
+export default CountriesContainer;

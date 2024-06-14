@@ -1,61 +1,56 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import Toast from '../toast/Toast';
-import { useTheme } from '../ThemeContext/ThemeContext';
+import { useTheme } from '../../context/ThemeContext';
 
-function SearchComponent({ data1, setFilteredData }) {
-  const [uniqueRegions, setUniqueRegions] = useState([]);
+function SearchComponent({ countriesData, setFilteredData }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedRegion, setSelectedRegion] = useState('');
   const { darkMode } = useTheme();
 
-  useEffect(() => {
-    try {
-      const regions = data1.reduce((acc, country) => {
-        if (country.region && !acc.includes(country.region)) {
-          acc.push(country.region);
-        }
-        return acc;
-      }, []);
-      setUniqueRegions(regions);
-    } catch (error) {
-      <Toast value={error} />;
+  const uniqueRegions = countriesData.reduce((acc, country) => {
+    if (country.region && !acc.includes(country.region)) {
+      acc.push(country.region);
     }
-  }, [data1]);
+    return acc;
+  }, []);
 
-  useEffect(() => {
+  const handleSearchCountry = (e) => {
+    const query = e.target.value.toLowerCase();
+    setSearchQuery(query);
+    filterData(query, selectedRegion);
+  };
+
+  const handleSelectRegion = (e) => {
+    const region = e.target.value;
+    setSelectedRegion(region);
+    filterData(searchQuery, region);
+  };
+
+  const filterData = (query, region) => {
     try {
-      let filteredCountries = data1;
+      let filteredCountries = countriesData;
 
-      if (searchQuery) {
+      if (query) {
         filteredCountries = filteredCountries.filter((country) =>
-          country.name.common.toLowerCase().includes(searchQuery.toLowerCase())
+          country.name.common.toLowerCase().includes(query)
         );
       }
 
-      if (selectedRegion) {
-        filteredCountries = filteredCountries.filter((country) => country.region === selectedRegion);
+      if (region) {
+        filteredCountries = filteredCountries.filter((country) => country.region === region);
       }
 
       setFilteredData(filteredCountries);
     } catch (error) {
-  
-      <Toast value={error} />;
+      return <Toast value={error.message} />;
     }
-  }, [data1, searchQuery, selectedRegion, setFilteredData]);
-
-  const handleSearchCountry = (e) => {
-    setSearchQuery(e.target.value);
-  };
-
-  const handleSelectRegion = (e) => {
-    setSelectedRegion(e.target.value);
   };
 
   return (
-    <div className='w-full flex justify-between py-10'>
-      <div className='w-3/5'>
+    <div className="w-full flex justify-between py-10">
+      <div className="w-3/5">
         <div className={`flex items-center shadow-lg w-3/5 px-5 rounded-md ${darkMode ? 'bg-elementDark text-textDark' : 'bg-elementLight text-textLight'}`}>
           <FontAwesomeIcon icon={faMagnifyingGlass} />
           <input
