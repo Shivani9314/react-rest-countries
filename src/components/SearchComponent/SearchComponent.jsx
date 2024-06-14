@@ -9,11 +9,11 @@ function SearchComponent({ countriesData, setFilteredData }) {
   const [selectedRegion, setSelectedRegion] = useState('');
   const { darkMode } = useTheme();
 
-  const uniqueRegions = countriesData.reduce((acc, country) => {
-    if (country.region && !acc.includes(country.region)) {
-      acc.push(country.region);
+  const uniqueRegions = countriesData.reduce((accumalator, country) => {
+    if (country.region && !accumalator.includes(country.region)) {
+      accumalator.push(country.region);
     }
-    return acc;
+    return accumalator;
   }, []);
 
   const handleSearchCountry = (e) => {
