@@ -73,7 +73,7 @@ function SearchComponent({ data1, setFilteredData }) {
         onChange={handleSelectRegion}
         value={selectedRegion}
       >
-        <option value="">Filter By Region</option>
+        <option value="" hidden>Filter By Region</option>
         {uniqueRegions.map((region, index) => (
           <option key={index} value={region}>
             {region}
