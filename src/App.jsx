@@ -1,8 +1,8 @@
 // App.jsx
 import React from 'react';
 import Navbar from './components/navbar/Navbar';
-import DataFetchingComponent from './components/api/DataFetchingComponent';
-import { ThemeProvider, useTheme } from './components/ThemeContext/ThemeContext';
+import CountriesContainer from './components/CountriesConatiner/CountriesContainer';
+import { ThemeProvider, useTheme } from './context/ThemeContext';
 
 function App() {
   const { darkMode } = useTheme();
@@ -11,7 +11,7 @@ function App() {
     <ThemeProvider>
       <div className={`flex flex-col min-h-screen w-full ${darkMode ? 'bg-bgDark' : 'bg-bgLight'}`}>
         <Navbar />
-        <DataFetchingComponent />
+        <CountriesContainer />
       </div>
     </ThemeProvider>
   );
