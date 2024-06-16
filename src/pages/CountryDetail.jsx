@@ -38,7 +38,7 @@ function CountryDetail() {
   if (status.error) {
     return <Toast value={status.error} />;
   }
-  
+
   let nativeNames = Object.values(countryData.name.nativeName || {}).reduce(
     (accumalator, names) => {
       if (!accumalator.includes(names.common)) {
@@ -65,13 +65,13 @@ function CountryDetail() {
     <div className={`w-full h-full ${darkMode ? 'bg-bgDark text-textDark' : 'bg-bgLight text-textLight'}`}>
      <div className="w-4/5 h-full mx-auto flex flex-col gap-20">
      <Link to = {`/`}>
-      <button className= {`mt-10 px-5 py-3 shadow-lg ${darkMode ? 'bg-bgDark' : 'bg-bgLight'}`}><FontAwesomeIcon icon={faArrowLeft} /> Back</button>
+      <button className= {`mt-10 px-5 py-3 shadow-lg rounded-md ${darkMode ? 'bg-elementDark' : 'bg-elementLight'}`}><FontAwesomeIcon icon={faArrowLeft} /> Back</button>
       </Link>
-      <div className='flex flex-col lg:flex-row gap-20'>
+      <div className='flex flex-col lg:flex-row gap-20 items-center'>
         <img className=' w-full lg:w-1/2' src={countryData.flags.png} alt={`${countryData.name.common} flag`} />
         <div className='flex flex-col gap-10 justify-center'>
           <h1 className='text-2xl font-bold '>{countryData.name.common}</h1>
-          <div className='flex flex-col gap-10 mb-20 lg:grid lg:grid-cols-2 lg:gap-20'>
+          <div className='flex flex-col gap-10 mb-10 lg:grid lg:grid-cols-2 lg:gap-10 lg:mb-0'>
             <div className='flex flex-col gap-5 text-l'>
               <p><strong>Native Name: </strong> {nativeNames.length !== 0 ? nativeNames.join(", ") : "N/A"}</p>
               <p><strong>Population: </strong> {countryData.population}</p>
@@ -88,7 +88,7 @@ function CountryDetail() {
               <h4><strong>Border Countries :</strong></h4>
               {countryData.borders ? (
                 countryData.borders.map((border) => (
-                  <Link className='p-2 shadow-lg' key={border} to={`/country/${border}`}>{border}</Link>
+                  <Link className={`p-2 shadow-lg rounded-md ${darkMode ? 'bg-elementDark' : 'bg-elementLight'}`} key={border} to={`/country/${border}`}>{border}</Link>
                 ))
               ) : (
                 <p>N/A</p>
