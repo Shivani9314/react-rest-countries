@@ -84,7 +84,7 @@ function CountryDetail() {
               <p><strong>Currencies:</strong> {currencies.length !== 0 ? currencies.join(", ") : "N/A"}</p>
               <p><strong>Languages:</strong> {countryLanguage.length !== 0 ? countryLanguage.join(", ") : "N/A"}</p>
             </div>
-            <div className='col-span-2 flex gap-2 items-center'>
+            <div className='col-span-2 flex flex-wrap gap-2 items-center'>
               <h4><strong>Border Countries :</strong></h4>
               {countryData.borders ? (
                 countryData.borders.map((border) => (
