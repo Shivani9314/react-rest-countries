@@ -1,6 +1,6 @@
 # Rest-Countries using React
 
-![](lightmode.png)  
-![](darkmode.png)  
+![](assets/lightmode.png)  
+![](assets/MobileView.png)  
 
 #### Live Link : https://react-rest-countries-five.vercel.app/
