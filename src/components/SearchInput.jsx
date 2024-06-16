@@ -14,8 +14,8 @@ function SearchInput({onSearch}) {
     }
 
     return (
-        <div className="w-3/5">
-            <div className={`flex items-center shadow-lg w-3/5 px-5 rounded-md ${darkMode ? 'bg-elementDark text-textDark' : 'bg-elementLight text-textLight'}`}>
+        <div className="lg:w-3/5 w-full">
+            <div className={`flex items-center shadow-lg w-full lg:w-3/5 px-5 rounded-md ${darkMode ? 'bg-elementDark text-textDark' : 'bg-elementLight text-textLight'}`}>
                 <FontAwesomeIcon icon={faMagnifyingGlass} />
                 <input
                     className={`p-5 border-none focus:outline-none ${darkMode ? 'bg-elementDark text-textDark' : 'bg-elementLight text-textLight'}`}

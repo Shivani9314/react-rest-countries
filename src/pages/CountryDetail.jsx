@@ -28,13 +28,17 @@ function CountryDetail() {
   }, [id]);
 
   if (status.loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="absolute top-0 left-0 bg-glare h-full w-full grid place-content-center">
+        <div className="text-black text-3xl tracking-widest font-bold">Loading...</div>
+      </div>
+    );
   }
 
   if (status.error) {
-    return <div>Error: {status.error}</div>;
+    return <Toast value={status.error} />;
   }
-
+  
   let nativeNames = Object.values(countryData.name.nativeName || {}).reduce(
     (accumalator, names) => {
       if (!accumalator.includes(names.common)) {

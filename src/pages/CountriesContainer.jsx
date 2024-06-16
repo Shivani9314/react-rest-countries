@@ -31,6 +31,18 @@ const CountriesContainer = () => {
     fetchData();
   }, []);
 
+  if (status.loading) {
+    return (
+      <div className="absolute top-0 left-0 bg-glare h-full w-full grid place-content-center">
+        <div className="text-black text-3xl tracking-widest font-bold">Loading...</div>
+      </div>
+    );
+  }
+
+  if (status.error) {
+    return <Toast value={status.error} />;
+  }
+
   const uniqueRegions = countriesData.reduce((accumulator, country) => {
     if (country.region && !accumulator.includes(country.region)) {
       accumulator.push(country.region);
@@ -54,7 +66,7 @@ const CountriesContainer = () => {
 
   const handleSelectRegion = (region) => {
     setSelectedRegion(region);
-    setSelectedSubRegion('');
+    setSelectedSubRegion(''); 
   };
 
   const handleSelectSubRegion = (subRegion) => {
@@ -112,26 +124,16 @@ const CountriesContainer = () => {
   const filteredData = filterData();
   const subRegions = Array.from(getSubRegions(selectedRegion));
 
-  if (status.loading) {
-    return (
-      <div className="absolute top-0 left-0 bg-glare h-full w-full grid place-content-center">
-        <div className="text-black text-3xl tracking-widest font-bold">Loading...</div>
-      </div>
-    );
-  }
-
-  if (status.error) {
-    return <Toast value={status.error} />;
-  }
 
   return (
     <div className={`w-full h-full ${darkMode ? 'bg-bgDark' : 'bg-bgLight'}`}>
       <div className="w-4/5 h-full mx-auto flex flex-col items-center">
-        <div className="w-full flex flex-col md:flex-row  gap-5 justify-between py-10">
+        <div className="w-full flex flex-col lg:flex-row  gap-5 justify-between py-10">
           <SearchInput onSearch={handleSearch} />
-          <Filter onSelect={handleSelectRegion} target={uniqueRegions} filterBy="Region" />
+         <div className='flex flex-col gap-5 md:flex-wrap md:flex-row lg:flex-nowrap lg:flex-row'>
+         <Filter onSelect={handleSelectRegion} target={uniqueRegions} filterBy="Region" value={selectedRegion} />
           {selectedRegion && (
-            <Filter onSelect={handleSelectSubRegion} target={subRegions} filterBy="SubRegion" />
+            <Filter onSelect={handleSelectSubRegion} target={subRegions} filterBy="SubRegion" value={selectedSubRegion} />
           )}
           <Sort
             label="Sort by Population" 
@@ -143,6 +145,7 @@ const CountriesContainer = () => {
             sortOrder={sortByArea} 
             onSort={handleSortByArea} 
           />
+         </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 py-8 gap-10 justify-between">
           {filteredData.length > 0 ? (
